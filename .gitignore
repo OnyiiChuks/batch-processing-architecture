@@ -1,0 +1,61 @@
+
+
+# Byte-compiled / Cached files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+
+# Virtual environment
+venv/
+.env
+.venv/
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Config and environment files
+#*.ini
+*.cfg
+*.env
+secrets.json
+
+# Pytest & Coverage
+.coverage
+htmlcov/
+*.cover
+*.py.cover
+*.pytest_cache/
+nosetests.xml
+coverage.xml
+test-reports/
+
+# Database and Data Files
+*.sqlite3
+*.db
+#*.csv
+*.parquet
+#data/
+
+# Ignore macOS and system files
+.DS_Store
+Thumbs.db
+
+#For Docker-Based Projects
+docker-compose.override.yml
+docker-compose.dev.yml
+.dockerignore
+
+
+# Spark temp files
+spark-warehouse/
+metastore_db/
+.derby.log
+
+
+# HDFS logs and configs
+hdfs.log

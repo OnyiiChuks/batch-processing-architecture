@@ -1,0 +1,10 @@
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value> <!-- Number of data replicas -->
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/hadoop/dfs/name</value> <!-- Path for NameNode metadata -->
+    </property>
+</configuration>

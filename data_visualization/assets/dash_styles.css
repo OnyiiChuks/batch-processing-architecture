@@ -1,0 +1,85 @@
+/* style for the html body*/
+body {
+    background-color: #708090;
+}
+
+/*main container style*/
+.dashboard-container {
+    width: 1200px;
+    height: 800px;
+    margin: 50px auto;
+    background-color: #010103;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    
+}
+
+/*the H3 title style*/
+H3 {
+    font-family: 'Poppins';
+    color: #ffffff;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* The radiobuttons */
+#graph-selector{
+    padding:10px;
+    margin-right: 20px;
+}
+
+/* Fraud Graph setting */
+#fraud-graph{
+    margin-top: 5px;
+}
+
+/* Parent Container for the controls and graph */
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px; /* Spacing between elements */
+    margin: 0
+
+    
+}
+
+/*.modebar { display: none !important; }*/
+
+/* dropdown Container */
+.controls {
+    min-width: 250px;  /*Fixed width for dropdowns*/
+    min-height: 150px;
+    /*flex: 1 0 150px ;  flex-grow, flex-shrink, flex-basis*/
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between labels and dropdowns */
+    border: 3px solid #444;
+    padding: 10px;
+    
+}
+/* dropdown labels*/
+.dropdown-label{
+    font-family: "Poppins";
+    font-size: 15px !important;
+    color: #640fec;
+}
+
+
+  /* Graph Container */
+.graph-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1; /* Expands to fill available space */
+    overflow: hidden; /* Prevents content from spilling out */
+    max-height: 800px; /* Prevents it from getting too large */
+    min-height: 400px; /* Ensures it has a reasonable size */
+    display: flex;
+    justify-content: center; /* Centers the graph */
+    align-items: center; /* Centers vertically */
+    background-color: #ffffff; /* White background */
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}

@@ -1,0 +1,8 @@
+#Needed packages for the dashboard functionalities
+dash
+dash-bootstrap-components
+pandas
+plotly
+sqlalchemy
+psycopg2-binary
+#flask

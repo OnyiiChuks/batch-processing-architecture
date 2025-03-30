@@ -1,0 +1,10 @@
+<configuration>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/hadoop/dfs/data</value> <!-- Path for DataNode storage -->
+    </property>
+    <property>
+        <name>dfs.replication</name>
+        <value>2</value> <!-- Number of data replicas -->
+    </property>
+</configuration>
