@@ -207,7 +207,7 @@ Create a .env file for PostgreSQL, Spark_Ingestion, Spark_Transformation and Dat
 ## Testing
 
 **To run the tests for HDFS, and PostgreSQL connection:**
-- Access the container that holds the test scripts. Example , is the container is spark-transformation, use:
+- Access the container that holds the test scripts. Example , if the container is spark-transformation, use:
 ``` bash
  docker exec -it spark-transformation bash
 ``` 
