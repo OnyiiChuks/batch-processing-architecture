@@ -19,7 +19,7 @@ This repository contains a scalable batch processing pipeline built using Apache
 
 ## Project Structure
 
-<pre>```plaintext
+<pre>
  batch_processing/ 
   |
   | ├── Data/                 data downloaded from Kaggle
