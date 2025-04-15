@@ -129,7 +129,7 @@ def ingest_fraud_data_in_batches(spark, input_path, output_path, batch_size, bat
             
         if batch_number < 12:
                 logger.info(f"Next batch comes up next month at the same time...")
-                time.sleep(60)  #keep container running for 15mins, adjust as needed(enough time to run the pytest)
+                time.sleep(60)  #keep container running for few seconds, adjust as needed
                
         
     except Exception as e:
