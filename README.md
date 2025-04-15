@@ -178,9 +178,9 @@ Create a .env file for PostgreSQL, Spark_Ingestion, Spark_Transformation and Dat
 
    - View dashboard for data visualization
        `
-       http://0.0.0.0/8580 
-       http://localhost/8580
-       http://127.0.0.1:8050 
+      - http://0.0.0.0/8580 
+      - http://localhost/8580
+      - http://127.0.0.1:8050 
 
       `
 
