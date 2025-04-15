@@ -110,7 +110,7 @@ https://www.kaggle.com/datasets/devanisdwisutrisno/fraud-transactions-with-times
 
 
 ## Project Architecture
-![Architecture](images/flowChart.png)
+![Architecture](flowChart.png)
 
 
 ## Data Flow Overview:
