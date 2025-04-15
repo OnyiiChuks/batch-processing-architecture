@@ -30,7 +30,6 @@ services:
 #service for hdfs datanode
   hdfs-datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    #image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8    #working but not tested with full pipeline
     container_name: hdfs-datanode
     environment:
       - CLUSTER_NAME=hadoop-cluster
