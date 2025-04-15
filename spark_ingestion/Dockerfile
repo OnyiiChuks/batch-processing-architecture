@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Upgrade pip and install PySpark (already included in the base image, but ensuring latest version)
 # with other necessary packages
 RUN python3 -m pip install --no-cache-dir --upgrade pip pyspark pytest py4j cryptography 
-RUN pip install python-dotenv fsspec hdfs3
+RUN pip install python-dotenv 
 
 # Create main directory for the ingestion service
 RUN mkdir -p /app 

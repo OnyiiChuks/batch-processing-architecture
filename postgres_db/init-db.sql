@@ -18,13 +18,13 @@ BEGIN
 
     -- Create users 
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'user1') THEN
-        CREATE USER User1 WITH PASSWORD 'User123';
+        CREATE USER user1 WITH PASSWORD 'User123';
         GRANT db_user TO user1;
         ALTER ROLE user1 INHERIT;
     END IF;
 
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'analyst') THEN
-        CREATE USER Analyst WITH PASSWORD 'Analyst456';
+        CREATE USER analyst WITH PASSWORD 'Analyst456';
         GRANT db_reader TO analyst;
         ALTER ROLE analyst INHERIT;
     END IF;
@@ -35,7 +35,7 @@ END $$;
 -- Create table transformed_fraud_data
 CREATE TABLE IF NOT EXISTS transformed_data (
     transactionID SERIAL PRIMARY KEY,  -- Auto-incrementing unique ID
-    transType VARCHAR(50) NOT NULL,      -- Transaction type (PAYMENT, TRANSFER, etc.)
+    transType VARCHAR(50) NOT NULL,    -- Transaction type (PAYMENT, TRANSFER, etc.)
     amount DECIMAL(15,2) NOT NULL,     -- Amount of the transaction
     nameOrig VARCHAR(50) NOT NULL,     -- Sender’s account ID
     oldbalanceOrg DECIMAL(15,2),       -- Sender’s balance before transaction

@@ -6,15 +6,15 @@ from cryptography.fernet import Fernet
 #from pyspark.sql.functions import udf
 from pyspark.sql.types import StringType
 from write_to_db import write_to_database
-import time
 import os
+import sys
 import logging
+import time
 
 
 
 # Set logging formate which will be sent to both a file and in the console
 logging.basicConfig(
-    #filename="/opt/spark/logs/spark_transform.log",
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
@@ -24,7 +24,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# Initialize Spark session for docker1
+""" Initialize Spark session with custom configurations for Docker environment:
+# - Set application name
+# - Include PostgreSQL JDBC driver for database connectivity
+# - Configure HDFS as the default file system
+# - Allocate memory for Spark driver and executor
+# - Disable writing of _SUCCESS files after jobs
+# - Optimize Parquet performance by disabling schema merging
+"""
 spark = SparkSession.builder \
     .appName("DataTransformation") \
     .config("spark.jars", "/opt/spark/jars/postgresql-42.2.5.jar") \
@@ -36,23 +43,22 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 
-
-# Path to the ingested fraud data from hdfs
-input_path = "hdfs://hdfs-namenode:9000/processed_fraud_data"
-
-# Table name in PostgreSQL
-table_name = "transformed_data"
-
-#set time interval between each ingestion
-interval_seconds = int(os.getenv("BATCH_INTERVAL_SECONDS"))
-
-# Load decryption key (the same as encryption key)
+# Load decryption key from .env file (the same as encryption key)
 SECRET_KEY = os.getenv("ENCRYPTION_KEY")  
 cipher_suite = Fernet(SECRET_KEY)
 
 
+""" input_path - path to the ingested data in hdfs
+    output_path - path tostore the transformed data to hdfs if needed
+    table_name - table name where transformed data can be stored in PostgreSQL. 
+"""
+input_path = "hdfs://hdfs-namenode:9000/processed_fraud_data"
+output_path = "hdfs://hdfs-namenode:9000/transformed_fraud_data"
+table_name = "transformed_data"
 
-"""Function to decrypt the data"""
+
+
+"""Function to decrypt data"""
 def decrypt_data(data):
     if data is not None:
         return cipher_suite.decrypt(data.encode()).decode()
@@ -63,20 +69,34 @@ decrypt_udf = udf(decrypt_data, StringType())
 
 
 
+"""function to save transformed data back to hdfs.
+   this can be usefully if further transformation on the processed data is needed 
+   Output_path - the path where the transformed data will be saved in hdfs
+"""
+def save_data_to_hdfs(df, output_path):
+    #Save as parquet data
+
+    logger.info("Saving transformed data back to hdfs")
+    df.write.parquet(output_path, mode="overwrite")
+    logger.info("Parquet data saved to hdfs")
+
+
+
+
 """Function that performs the data transformation processes
    input_path - path to the data in hdfs
    table_name - name of the table from postgreSQL where the transformed data will be stored.
 """
-def perform_transformation(input_path,table_name):   
+def perform_transformation(input_path,table_name, batch_num):   #output_path,
     try:
         #transform the data according to the batches the were saved
-        batches = [f"{input_path}/batch_{i}" for i in range(1, 22)] 
 
-        for batch in batches:
+            batch = f"{input_path}/batch_{batch_num}"
             logger.info(f"Processing {batch}")
             
             # Read the parquet file in batches
             df = spark.read.parquet(batch)
+
 
             # Log schema and sample data for debuging
             logger.info(f"Schema of batch {batch}:")
@@ -97,7 +117,7 @@ def perform_transformation(input_path,table_name):
             #-------------------------------------------------------------------------------------------------------------------------
             
             logger.info("Starting Data cleaning...")
-            logger.info("=====================================================================================================================")
+            logger.info("============================================================================================================")
             
             # Drop duplicates records
             df = df.dropDuplicates()
@@ -105,16 +125,16 @@ def perform_transformation(input_path,table_name):
             # Drop rows where 'isFraud' column has null values
             df = df.dropna(subset=["isFraud"])
 
-            # Rename the 'type' column to 'acctype'
+            # Rename the 'type' column to 'transtype' ie transaction type
             df = df.withColumnRenamed("type", "transType")
 
 
-            #----------------------------------------------------------------------------------------------------------
+            #--------------------------------------------------------------------------------------------------------------------------
             #Data Aggregation
-            #-----------------------------------------------------------------------------------------------------------
+            #--------------------------------------------------------------------------------------------------------------------------
             
             logger.info(f"Starting Data Aggragation ...")
-            logger.info("===============================================================================================================")
+            logger.info("=============================================================================================================")
             
             
             #make sure Spark treats isFraud and isFlaggedFraud as boolean by using 'cast'
@@ -131,7 +151,10 @@ def perform_transformation(input_path,table_name):
             ).withColumn(
             "fraud_rate", (col("fraudulent_transactions") / col("total_transactions")) * 100
             )
+
+            fraud_by_type.show()
             
+
 
             '''
             Average amount for fraudulent transactions and Maximum fraud amount recorded
@@ -139,7 +162,10 @@ def perform_transformation(input_path,table_name):
             '''
             fraud_stats = df.filter(col("isFraud") == 1).agg(avg("amount").alias("avg_fraud_amount"),
             max("amount").alias("max_fraud_amount")
-        )
+            )
+
+            fraud_stats.show()
+            
             
 
             '''Total flagged fraud transactions (isFlaggedFraud == 1) and Percentage of flagged fraud that are actually fraud (isFlaggedFraud == 1 & isFraud == 1)
@@ -151,8 +177,10 @@ def perform_transformation(input_path,table_name):
             ).withColumn(
             "flag_accuracy", (col("true_positive_flags") / col("total_flagged")) * 100
              )
-             
-             
+            
+            flagged_fraud_stats.show()
+        
+
 
             # Write aggregated data to PostgreSQL
             logger.info("Writing aggregated data to the PostgreSQL database...")
@@ -168,12 +196,12 @@ def perform_transformation(input_path,table_name):
 
             
 
-            #---------------------------------------------------------------------------------------------------
+            #---------------------------------------------------------------------------------------------------------------------
             # Schema Validation:
-            #----------------------------------------------------------------------------------------------------
+            #---------------------------------------------------------------------------------------------------------------------
             
             logger.info("Starting Schema validation...")
-            logger.info("===================================================================================================")
+            logger.info("==========================================================================================================")
 
             #Ensure the dataframe has the expected columns  
             expected_columns = ["transactionID", "transType" , "amount", "nameOrig", "oldbalanceOrg", "newbalanceOrig",\
@@ -199,28 +227,28 @@ def perform_transformation(input_path,table_name):
             logger.info(f"Data successfully written to the {table_name} table in the database.")
 
 
-            #Save transformed data to hdfs
-            #Save directly to parquet
-            ##df.write.parquet(output_path, mode="overwrite")
-            ##logger.info("Parquet data saved")
+            #Save transformed data back to hdfs (if needed)
+            #save_data_to_hdfs(df, output_path)
 
-            
-            logger.info(f"Waiting for {interval_seconds} seconds before transforming the next batch...")
-            time.sleep(interval_seconds)
-
+            time.sleep(900) # wait for few minutes before stopping the container, enough time to run the pytest.
+        
 
     except Exception as e:
         logger.info(f"Error occurred: {e}")
     else:    
-        logger.info("Data transformation completed.")
+        logger.info(f"Data transformation for batch {batch_num} completed. Expecting the next scheduled batch...")
     finally:
         spark.stop()
 
 
-if __name__ == "__main__":
-    #Save transformed data to postgres 
-    perform_transformation(input_path,table_name)
 
-    #save transformed data back to hdfs
-    #perform_transformation(input_path,output_path)
+if __name__ == "__main__":
+    # Read the batch number from the command-line argument
+    if len(sys.argv) < 2:
+        raise ValueError("Batch number is required.")
+    batch_number = int(sys.argv[1])
+    logger.info(f"Running transformation for batch {batch_number}")
+
+    #perform transformation using batch_number
+    perform_transformation(input_path,table_name,batch_number)
 

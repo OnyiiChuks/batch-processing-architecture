@@ -1,3 +1,5 @@
+/* styles for the data_visualization dash board*/
+
 /* style for the html body*/
 body {
     background-color: #708090;
@@ -44,7 +46,6 @@ H3 {
     
 }
 
-/*.modebar { display: none !important; }*/
 
 /* dropdown Container */
 .controls {

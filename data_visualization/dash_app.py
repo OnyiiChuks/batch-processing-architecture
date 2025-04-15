@@ -166,8 +166,8 @@ def update_graph(selected_graph, selected_x, selected_y):
 
 
 # Run the app
-'''The app is ment to run 0n  http//0000/8050
-but instead it runs only on localhost//8050 and 127.0.0.1/8050
+'''The app is ment to run 0n http//0000/8050
+   but it also runs on localhost//8050 and 127.0.0.1/8050
 '''
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=8050)  

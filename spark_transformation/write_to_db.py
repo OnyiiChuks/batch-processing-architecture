@@ -1,3 +1,6 @@
+
+"""Connecting and saving data to postgreSql"""
+
 #Import needed packages
 import logging
 import os
@@ -29,7 +32,7 @@ def write_to_database(dataframe, table_name):
         # JDBC connection URL
         jdbc_url = f"jdbc:postgresql://{DB_HOST}:{DB_PORT}/{DB_NAME}?ssl=true&sslmode=require&sslfactory=org.postgresql.ssl.NonValidatingFactory"
         
-        logging.info(f"The jdbc url is {jdbc_url}") #for debugging
+        #logging.info(f"The jdbc url is {jdbc_url}") #for debugging
         
         # JDBC properties
         db_properties = {
@@ -38,7 +41,7 @@ def write_to_database(dataframe, table_name):
             "driver": "org.postgresql.Driver",
             "ssl": "true"
         }
-        logging.info(f"The jdbc properties are: {db_properties}") #for debugging
+        #logging.info(f"The jdbc properties are: {db_properties}") #for debugging
 
         # Write the Spark DataFrame to the PostgreSQL database
         logging.info(f"Writing data to the table '{table_name}' in the database...")

@@ -1,6 +1,6 @@
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://hdfs-namenode:9000</value> <!-- the container name or IP -->
+        <value>hdfs://hdfs-namenode:9000</value> <!-- the container name and IP -->
     </property>
 </configuration>

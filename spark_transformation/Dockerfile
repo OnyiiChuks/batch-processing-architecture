@@ -6,8 +6,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     gcc \
-    libpq-dev \
-    && apt-get clean
+    libpq-dev 
+    #\
+    #&& apt-get clean
 
 # Set JAVA_HOME
 RUN apt-get update && apt-get install -y openjdk-11-jdk
@@ -37,16 +38,8 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 
 #upgrade pip and install necessary packages
 RUN pip3 install --upgrade pip
-RUN pip3 install pyspark==3.1.2 py4j==0.10.9 cryptography pytest fsspec hdfs3
-RUN pip3 install pyarrow
+RUN pip3 install pyspark==3.1.2 py4j==0.10.9 cryptography pytest 
 
-
-# Copy the transformation scripts
-#COPY transformation.py /opt/spark/scripts/transformation.py 
-#COPY write_to_db.py /opt/spark/scripts/write_to_db.py
-
-#COPY the log4j file for logging to a file
-#COPY log4j.properties /opt/spark/conf/log4j.properties
 
 # Set working directory
 WORKDIR /opt/spark/scripts
@@ -55,7 +48,7 @@ WORKDIR /opt/spark/scripts
 COPY . /opt/spark/scripts
 
 # Command to execute the transformation
-#CMD ["spark-submit", "/opt/spark/transformation.py"]
-CMD ["spark-submit", "/opt/spark/scripts/transformation.py"]
+#CMD ["spark-submit", "/opt/spark/scripts/transformation.py"]
+
 
 
