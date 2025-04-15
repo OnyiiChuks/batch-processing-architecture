@@ -96,12 +96,12 @@ This repository contains a scalable batch processing pipeline built using Apache
 </pre>
 
 ## Features
-**Automated Orchestration** – The orchestrator.py script starts, schedules and manages the pipeline.
-**Containerized Services** – All components run in Docker for easy deployment.
-**Distributed Processing** – Uses Apache Spark for efficient batch data processing.
-**PostgreSQL Integration** – Stores processed data for analytics.
-**HDFS Storage** – Manages large-scale data ingestion.
-**Data Visualization** – Provides insights using interactive dashboards.
+- **Automated Orchestration** – The orchestrator.py script starts, schedules and manages the pipeline.
+- **Containerized Services** – All components run in Docker for easy deployment.
+- **Distributed Processing** – Uses Apache Spark for efficient batch data processing.
+- **PostgreSQL Integration** – Stores processed data for analytics.
+- **HDFS Storage** – Manages large-scale data ingestion.
+- **Data Visualization** – Provides insights using interactive dashboards.
 
 
 ## Dataset
