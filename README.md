@@ -23,7 +23,7 @@ This repository contains a scalable batch processing pipeline built using Apache
  batch_processing/ 
   |
   ├── Data/                  data downloaded from Kaggle
-  |     ├── raw_fraud.csv
+  | ├── raw_fraud.csv
   |
   ├── data_visualization/     Visualization tool (Dash, Plotly)
   | ├── assets/
