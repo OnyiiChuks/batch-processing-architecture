@@ -1,5 +1,5 @@
 ﻿
-#Batch Processing Architecture
+# Batch Processing Architecture
 
 ## Table of Contents
 - [Overview](#overview)
@@ -13,19 +13,19 @@
 - [Future Improvements](#future-improvements)
 
 
-##Overview
+## Overview
 This repository contains a scalable batch processing pipeline built using Apache Spark, HDFS, PostgreSQL, and Docker. The pipeline orchestrates data ingestion, transformation, and visualization in a distributed environment.
 
 
-##Project Structure
+## Project Structure
 
 <pre>```plaintext
  batch_processing/ 
   |
-  | ├── Data/                 *italic # data downloaded from Kaggle*
+  | ├── Data/                 data downloaded from Kaggle
   |     ├── raw_fraud.csv
   |
-  ├── data_visualization/     *italic # Visualization tools (Dash, Plotly)*
+  ├── data_visualization/     Visualization tool (Dash, Plotly)
   | ├── assets/
   |     ├── dash_styles.css
   | ├── __init__.py
@@ -36,7 +36,7 @@ This repository contains a scalable batch processing pipeline built using Apache
   | ├── requirements.txt
   | ├── visualization.log
   |
-  ├── hdfs_docker/            *italic # HDFS setup with Docker *
+  ├── hdfs_docker/             HDFS setup with Docker 
   | ├── datanode/
   |     ├── core-site.xml
   |     ├── hdfs-site.xml
@@ -44,7 +44,7 @@ This repository contains a scalable batch processing pipeline built using Apache
   |     ├── core-site.xml
   |     ├── hdfs-site.xml
   |
-  ├── postgres_db/            *italic # PostgreSQL database setup*
+  ├── postgres_db/             PostgreSQL database setup
   | ├── conf/
   |     ├── pg.hba.conf
   |     ├── postgresql.conf
@@ -58,7 +58,7 @@ This repository contains a scalable batch processing pipeline built using Apache
   | ├── init-db.sql
   | ├── ingestion.py
   |
-  ├── spark_ingestion/        *italic # Data ingestion scripts*
+  ├── spark_ingestion/        Data ingestion scripts
   | ├── data/
   | ├── logs/
   |     ├── spark-ingestion.log
@@ -68,7 +68,7 @@ This repository contains a scalable batch processing pipeline built using Apache
   | ├── ingestion.py
   | ├── log4j.properties
   |
-  ├── spark_transformation/   *italic # Spark transformations & processing*
+  ├── spark_transformation/    Spark transformations & processing
   | ├── logs/
   |     ├── spark_transform.log
   | ├── test_scripts/
@@ -84,18 +84,18 @@ This repository contains a scalable batch processing pipeline built using Apache
   |
   ├── gitignore
   |
-  ├── docker-compose.yml      *italic # Defines the containerized services*
+  ├── docker-compose.yml       Defines the containerized services
   |
-  ├── flowChart.png           *italic # Project Architecture*
+  ├── flowChart.png            Project Architecture
   |
-  ├── orchestrator.py         *italic # Controls pipeline execution*
+  ├── orchestrator.py          Controls pipeline execution
   |
-  ├── orchestrator.log        *italic # Logs pipeline execution*
+  ├── orchestrator.log         Logs pipeline execution
   |
-  ├── README.md               *italic # Project documentation*
+  ├── README.md                Project documentation
 </pre>
 
-##Features
+## Features
 **Automated Orchestration** – The orchestrator.py script starts, schedules and manages the pipeline.
 **Containerized Services** – All components run in Docker for easy deployment.
 **Distributed Processing** – Uses Apache Spark for efficient batch data processing.
@@ -104,7 +104,7 @@ This repository contains a scalable batch processing pipeline built using Apache
 **Data Visualization** – Provides insights using interactive dashboards.
 
 
-##Dataset
+## Dataset
 **Downloaded from:**
 https://www.kaggle.com/datasets/devanisdwisutrisno/fraud-transactions-with-timestamp
 
@@ -117,9 +117,9 @@ https://www.kaggle.com/datasets/devanisdwisutrisno/fraud-transactions-with-times
 - Raw fraud data → Spark_ingestion → Parquet file → HDFS → Spark_transformation → PostgreSQL → Python Dashboard .
 
 
-##Getting Started
+## Getting Started
 
-###Prerequisites
+### Prerequisites
 Ensure you have the following installed:
 
 Docker & Docker Compose
@@ -131,7 +131,7 @@ VS code (or any IDE of choice)
 
 
 
-###Setup
+### Setup
 
 1. **Clone the Repository**:
 Clone the GitHub repository to get started or you can create your own project folder.
@@ -146,7 +146,7 @@ Create a .env file for PostgreSQL, Spark_Ingestion, Spark_Transformation and Dat
 
  
 
-3. **Automatically build and start the Pipeline by running the Orchestrator script:*
+3. **Automatically build and start the Pipeline by running the Orchestrator script:**
  ```bash
     python orchestrator.py
  ```
@@ -204,9 +204,7 @@ Create a .env file for PostgreSQL, Spark_Ingestion, Spark_Transformation and Dat
      ``` 
 
 
-
-
-##Testing
+## Testing
 
 **To run the tests for HDFS, and PostgreSQL connection:**
 - Access the container that holds the test scripts. Example , is the container is spark-transformation, use:
@@ -223,7 +221,7 @@ Where [script_name] is the test file name.
 - Note: Running pytest from your local terminal will not work unless the script and testing environment are inside the running container.
 
 
-##Future Improvements
+## Future Improvements
 - Implement real-time streaming with Apache Kafka and Spark Streaming
 
 - Optimize Spark job performance
