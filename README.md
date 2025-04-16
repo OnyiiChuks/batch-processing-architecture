@@ -122,7 +122,7 @@ https://www.kaggle.com/datasets/devanisdwisutrisno/fraud-transactions-with-times
 ### Prerequisites
 Ensure you have the following installed:
 
-Docker & Docker Compose
+Docker and Docker Compose
 
 Python 3.x
 
